@@ -4,6 +4,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+import Cursor from "../components/Cursor.astro";
+import Navbar from "../components/Navbar.astro";
 ---
 
 <!doctype html>
@@ -14,9 +17,12 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 		<title>{title}</title>
 	</head>
 	<body>
+		<Cursor />
+		<Navbar />
 		<slot />
 	</body>
 </html>
@@ -45,6 +51,69 @@ const { title } = Astro.props;
 			DejaVu Sans Mono,
 			Bitstream Vera Sans Mono,
 			Courier New,
-			monospace;
+			monospace,
+			SpaceGrotesk,
+			Doppelganger Display;
 	}
+
+	
+	.line {
+    width: 1px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.06);
+    transition: transform 0.1s ease-out;
+  	}
 </style>
+
+<script>
+	document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+	  anchor.addEventListener("click", function (e) {
+		e.preventDefault();
+		const targetId = this.getAttribute("href");
+		const targetElement = document.querySelector(targetId);
+  
+		if (targetElement) {
+		  const offset = 40; // Ajusta este valor según la altura de tu navbar
+		  const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+		  
+		  window.scrollTo({
+			top: elementPosition - offset,
+			behavior: "smooth"
+		  });
+		}
+	  });
+	});
+
+
+	//Movimiento de lineas
+	document.addEventListener('DOMContentLoaded', function() {
+    // Selecciona todos los contenedores de líneas de las secciones
+    // Parámetros del efecto
+  const maxDistance = 300; // Distancia máxima para aplicar el efecto
+  const amplitude = 20;    // Amplitud máxima en pixeles del desplazamiento vertical
+
+  // Listener global para el movimiento del mouse en el documento
+  document.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX;
+    // Se actualizan todas las líneas, sin importar en qué sección estén
+    document.querySelectorAll('.line').forEach(line => {
+      const rect = line.getBoundingClientRect();
+      const lineCenter = rect.left + rect.width / 2;
+      const distance = mouseX - lineCenter;
+      let distanceRatio = distance / maxDistance;
+      distanceRatio = Math.max(-1, Math.min(1, distanceRatio));
+      // Efecto "wave" usando función seno
+      const wave = amplitude * Math.sin(distanceRatio * Math.PI);
+      line.style.transform = `translateX(${wave}px)`;
+    });
+  });
+
+  // Cuando el mouse sale del documento, se reinicia el efecto
+  document.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.line').forEach(line => {
+      line.style.transform = 'translateY(0)';
+    });
+  });
+  });
+  </script>
+  

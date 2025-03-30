@@ -1,0 +1,98 @@
+---
+---
+<style>
+    /* Posicionamiento fijo para ambos elementos */
+    .cursor-outer,
+    .cursor-inner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: filter 0.15s ease-out;
+      opacity: 0.8; /* Ajusta el nivel de transparencia (0 es invisible, 1 es opaco) */
+    }
+  
+    /* Cursor externo: anillo con borde y transición */
+    .cursor-outer {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #e6e6e6;
+      border-radius: 50%;
+      transition: transform 0.15s ease-out, filter 0.15s ease-out;
+      
+    }
+  
+    /* Cursor interno: punto sólido con transición */
+    .cursor-inner {
+      width: 9px;
+      height: 9px;
+      background-color: #e6e6e6;
+      border-radius: 50%;
+      transition: background-color 0.15s ease-out, filter 0.15s ease-out;
+    }
+
+  </style>
+  
+  <div id="cursor-outer" class="cursor-outer"></div>
+  <div id="cursor-inner" class="cursor-inner"></div>
+  
+  <script client:load>
+    // Comprobación en consola
+    console.log("Cursor script loaded");
+  
+    const cursorOuter = document.getElementById("cursor-outer");
+    const cursorInner = document.getElementById("cursor-inner");
+  
+    let mouseX = window.innerWidth / 2,
+        mouseY = window.innerHeight / 2;
+    let outerX = mouseX,
+        outerY = mouseY;
+  
+    // Actualiza el cursor interno de forma inmediata
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorInner.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    });
+  
+    // Función de interpolación lineal para suavizar el movimiento
+    function lerp(a, b, n) {
+      return (1 - n) * a + n * b;
+    }
+  
+    // Animar el cursor externo con efecto trailing
+    function  animate() {
+      outerX = lerp(outerX, mouseX, 0.15);
+      outerY = lerp(outerY, mouseY, 0.15);
+      cursorOuter.style.transform = `translate(${outerX}px, ${outerY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  
+    // Función para aplicar el filtro invert al cursor
+    function addHoverListeners(el) {
+  el.addEventListener("mouseenter", () => {
+    console.log("mouseenter on", el);
+    cursorInner.style.backgroundColor = "#8bd450"; // Cambia el color interno a Tomato
+    cursorOuter.style.borderColor = "#8bd450"; // Cambia el borde externo a Tomato
+  });
+
+  el.addEventListener("mouseleave", () => {
+    console.log("mouseleave on", el);
+    cursorInner.style.backgroundColor = "#e6e6e6"; // Color original del cursor interno
+    cursorOuter.style.borderColor = "#e6e6e6"; // Color original del borde externo
+  });
+}
+
+  
+    // Asegurarse de que el DOM esté cargado para agregar los listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      const interactiveElements = document.querySelectorAll("a, button, svg, img");
+      interactiveElements.forEach((el) => {
+        addHoverListeners(el);
+      });
+      console.log("Interactive elements found:", interactiveElements);
+    });
+  </script>
+  
