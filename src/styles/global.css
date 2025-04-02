@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 @import url(https://db.onlinewebfonts.com/c/751859ed48262433504a363c60cc08f8?family=Doppelganger-Display);
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 @import "tailwindcss";
 
 @theme {
     --font-space: "Space Grotesk", monospace;
     --font-doppel: "Doppelganger-Display", monospace;
+    --font-garamond: "EB Garamond", serif;
     --color-base: #1d1a2f;
     --color-dark-purple: #734f9a;
     --color-light-purple: #965fd4;

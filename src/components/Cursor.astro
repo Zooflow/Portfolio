@@ -1,5 +1,3 @@
----
----
 <style>
     /* Posicionamiento fijo para ambos elementos */
     .cursor-outer,
@@ -25,8 +23,8 @@
   
     /* Cursor interno: punto sólido con transición */
     .cursor-inner {
-      width: 9px;
-      height: 9px;
+      width: 13px;
+      height: 13px;
       background-color: #e6e6e6;
       border-radius: 50%;
       transition: background-color 0.15s ease-out, filter 0.15s ease-out;
@@ -63,8 +61,8 @@
   
     // Animar el cursor externo con efecto trailing
     function  animate() {
-      outerX = lerp(outerX, mouseX, 0.15);
-      outerY = lerp(outerY, mouseY, 0.15);
+      outerX = lerp(outerX, mouseX, 0.4);
+      outerY = lerp(outerY, mouseY, 0.4);
       cursorOuter.style.transform = `translate(${outerX}px, ${outerY}px) translate(-50%, -50%)`;
       requestAnimationFrame(animate);
     }
