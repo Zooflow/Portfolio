@@ -40,7 +40,7 @@ import Navbar from "../components/Navbar.astro";
 	}
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		background: #734f9a;
 	}
 	code {
 		font-family:
@@ -130,7 +130,34 @@ import Navbar from "../components/Navbar.astro";
   });
   });
 
-  //Scroll X
-  
+  //Color change
+  document.addEventListener("DOMContentLoaded", () => {
+    const navbar = document.getElementById("navbar");
+    const horario = document.getElementById("horario"); // Seleccionamos el div del horario
+    const contactSection = document.getElementById("contact");
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    navbar.classList.add("bg-[var(--color-light-purple)]");
+                    navbar.classList.remove("bg-[var(--color-base)]");
+
+                    horario.classList.add("text-black"); // Cambia el color del texto
+                    horario.classList.remove("text-white"); // Quita el color original
+                } else {
+                    navbar.classList.add("bg-[var(--color-base)]");
+                    navbar.classList.remove("bg-[var(--color-light-purple)]");
+
+                    horario.classList.add("text-white"); // Vuelve al color original
+                    horario.classList.remove("text-[var(--color-dark-purple)]");
+                }
+            });
+        },
+        {rootMargin: "-100px 0px 0px 0px", threshold: 0.87 } // Ajusta el momento del cambio
+    );
+
+    observer.observe(contactSection);
+});
   </script>
   
