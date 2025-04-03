@@ -35,9 +35,7 @@
   <div id="cursor-outer" class="cursor-outer"></div>
   <div id="cursor-inner" class="cursor-inner"></div>
   
-  <script client:load>
-    // Comprobación en consola
-    console.log("Cursor script loaded");
+  <script is:inline>
   
     const cursorOuter = document.getElementById("cursor-outer");
     const cursorInner = document.getElementById("cursor-inner");
@@ -71,13 +69,11 @@
     // Función para aplicar el filtro invert al cursor
     function addHoverListeners(el) {
   el.addEventListener("mouseenter", () => {
-    console.log("mouseenter on", el);
     cursorInner.style.backgroundColor = "#8bd450"; // Cambia el color interno a Tomato
     cursorOuter.style.borderColor = "#8bd450"; // Cambia el borde externo a Tomato
   });
 
   el.addEventListener("mouseleave", () => {
-    console.log("mouseleave on", el);
     cursorInner.style.backgroundColor = "#e6e6e6"; // Color original del cursor interno
     cursorOuter.style.borderColor = "#e6e6e6"; // Color original del borde externo
   });
@@ -90,7 +86,6 @@
       interactiveElements.forEach((el) => {
         addHoverListeners(el);
       });
-      console.log("Interactive elements found:", interactiveElements);
     });
   </script>
   

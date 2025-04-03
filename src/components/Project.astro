@@ -1,0 +1,64 @@
+---
+export interface Props {
+  titulo: string;
+  imagen: string;
+  enlace: string;
+}
+
+const { titulo, imagen, enlace } = Astro.props;
+---
+<div class="py-12">
+<a href={enlace} target="_blank" rel="noopener noreferrer"
+  class="relative flex justify-between items-center text-8xl font-space text-gray-200/10 font-light block group"
+  onmousemove="handleMouseMove(event, this)"
+  onmouseleave="resetPosition(this)"
+>
+  <p class="group-hover:text-white transition-colors duration-500 z-10 relative" style="transition: text-shadow 0.2s; text-shadow: none;" 
+    onmouseover="this.style.textShadow='0px 0px 45px rgba(255,255,255,0.5)'" 
+    onmouseout="this.style.textShadow='none'">
+    {titulo}
+  </p>
+  
+  <div class="pointer-events-none absolute right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" 
+       style="z-index: 5; width: auto; height: auto; overflow: visible;">
+    <img src={imagen} alt={titulo} class="max-w-md w-auto h-auto">
+  </div>
+</a>
+</div>
+
+<script is:inline>
+  function handleMouseMove(event, element) {
+    const imgContainer = element.querySelector("div");
+    const rect = element.getBoundingClientRect();
+    const mouseY = event.clientY - rect.top;
+    
+    // Calcular posición relativa al elemento
+    const percentY = mouseY / rect.height;
+    const moveY = (percentY - 0.5) * 80; // Factor de movimiento mayor para ver el efecto
+    
+    // Posicionar el contenedor de la imagen con una transformación absoluta
+    imgContainer.style.position = "absolute";
+    imgContainer.style.top = "50%";
+    imgContainer.style.transform = `translateY(calc(-50% + ${moveY}px))`;
+    imgContainer.style.transition = "transform 0.2s ease-out";
+  }
+
+  function resetPosition(element) {
+    const imgContainer = element.querySelector("div");
+    imgContainer.style.transform = "translateY(-50%)";
+    imgContainer.style.transition = "transform 0.5s ease-out";
+  }
+
+  // Inicializar la posición de todas las imágenes
+  document.addEventListener("DOMContentLoaded", function() {
+    const links = document.querySelectorAll('a[href]');
+    links.forEach(link => {
+      const imgContainer = link.querySelector("div");
+      if (imgContainer) {
+        imgContainer.style.position = "absolute";
+        imgContainer.style.top = "50%";
+        imgContainer.style.transform = "translateY(-50%)";
+      }
+    });
+  });
+</script>

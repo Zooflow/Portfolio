@@ -159,5 +159,25 @@ import Navbar from "../components/Navbar.astro";
 
     observer.observe(contactSection);
 });
+
+  //Reloj
+  const timeElement = document.getElementById("current-time");
+    const miZonaHoraria = "America/Santiago"; 
+    
+    function updateTime() {
+      const now = new Date();
+      const formattedTime = new Intl.DateTimeFormat('es-CL', {
+        timeZone: miZonaHoraria,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }).format(now);
+      
+      timeElement.textContent = `${formattedTime}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
   </script>
   
